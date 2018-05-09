@@ -26,7 +26,16 @@ function loadPlugins () {
   var hooks = {};
 
   for (; i < length; ++i) {
-    var plugin = require(path.join(process.cwd(), 'node_modules', plugins[i]));
+    var plugin = null;
+    try {
+      plugin = require(path.join(process.cwd(), 'node_modules', plugins[i]));
+    } catch(e) {
+      try {
+        plugin = require(plugins[i]);
+      } catch(e) {
+        continue;
+      }
+    }
 
     if (
       typeof plugin.name !== 'string' ||
